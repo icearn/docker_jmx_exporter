@@ -1,5 +1,5 @@
 FROM maven:3-jdk-8
-ENV JMX_EXPORTER_VERSION=0.10
+ENV JMX_EXPORTER_VERSION=0.11-SNAPSHOT
 ENV REPO_TAG=parent-${JMX_EXPORTER_VERSION}
 ENV JMX_DEV_BASE=/usr/src/app
 ENV JMX_BASE=/opt/jmx_exporter
@@ -28,13 +28,13 @@ WORKDIR ${JMX_DEV_BASE}/jmx_exporter
  RUN   ls -la 
  RUN   ls -la jmx_prometheus_httpserver/
  RUN   ls -la jmx_prometheus_httpserver/target/
- #RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
+ RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
 
 # Clean up
- #RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
- #RUN   apt-get clean 
- #RUN   rm -rf /var/lib/apt/lists/*
-
+ RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
+ RUN   apt-get clean 
+ RUN   rm -rf /var/lib/apt/lists/*
+ RUN   ls -la 
 # Mount your own config here to override the default
 VOLUME ${JMX_BASE}
 WORKDIR ${JMX_BASE}
