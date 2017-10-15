@@ -25,12 +25,15 @@ RUN git clone https://github.com/prometheus/jmx_exporter.git
     #cd /opt/jmx_exporter && \
 WORKDIR ${JMX_DEV_BASE}/jmx_exporter
  RUN   mvn package 
- RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
+ RUN   ls -la 
+ RUN   ls -la jmx_prometheus_httpserver/
+ RUN   ls -la jmx_prometheus_httpserver/target/
+ #RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
 
 # Clean up
- RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
- RUN   apt-get clean 
- RUN   rm -rf /var/lib/apt/lists/*
+ #RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
+ #RUN   apt-get clean 
+ #RUN   rm -rf /var/lib/apt/lists/*
 
 # Mount your own config here to override the default
 VOLUME ${JMX_BASE}
