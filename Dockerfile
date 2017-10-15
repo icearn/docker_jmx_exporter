@@ -20,7 +20,7 @@ RUN apt-get update && \
     #cd /opt && \
 RUN mkdir -p ${JMX_DEV_BASE}
 WORKDIR ${JMX_DEV_BASE}
-RUN git clone --branch ${REPO_TAG} https://github.com/prometheus/jmx_exporter.git && \
+RUN git clone https://github.com/prometheus/jmx_exporter.git && \
 
     #cd /opt/jmx_exporter && \
 WORKDIR ${JMX_DEV_BASE}/jmx_exporter
