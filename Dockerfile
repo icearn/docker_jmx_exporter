@@ -11,10 +11,9 @@ RUN apt-get update && \
         #libsctp1 \
         #tzdata \
         #tzdata-java \
-        git
-        #\
-        #openjdk-7-jre-headless \
-        #openjdk-7-jre && \
+        git \       
+        openjdk-8-jre-headless \
+        openjdk-8-jre 
 # Build and install https://github.com/prometheus/jmx_exporter
 
     #cd /opt && \
@@ -24,10 +23,7 @@ RUN git clone https://github.com/prometheus/jmx_exporter.git
 
     #cd /opt/jmx_exporter && \
 WORKDIR ${JMX_DEV_BASE}/jmx_exporter
- RUN   mvn package 
- RUN   ls -la 
- RUN   ls -la jmx_prometheus_httpserver/
- RUN   ls -la jmx_prometheus_httpserver/target/
+ RUN   mvn package   
  RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
 
 # Clean up
