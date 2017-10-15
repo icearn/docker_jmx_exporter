@@ -20,16 +20,16 @@ RUN apt-get update && \
     #cd /opt && \
 RUN mkdir -p ${JMX_DEV_BASE}
 WORKDIR ${JMX_DEV_BASE}
-RUN git clone https://github.com/prometheus/jmx_exporter.git && \
+RUN git clone https://github.com/prometheus/jmx_exporter.git 
 
     #cd /opt/jmx_exporter && \
 WORKDIR ${JMX_DEV_BASE}/jmx_exporter
- RUN   mvn package && \
- RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb && \
+ RUN   mvn package 
+ RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
 
 # Clean up
- RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ && \
- RUN   apt-get clean && \
+ RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
+ RUN   apt-get clean 
  RUN   rm -rf /var/lib/apt/lists/*
 
 # Mount your own config here to override the default
