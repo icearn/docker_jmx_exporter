@@ -11,9 +11,10 @@ RUN apt-get update && \
         #libsctp1 \
         #tzdata \
         #tzdata-java \
-        git \       
-        openjdk-8-jre-headless \
-        openjdk-8-jre 
+        git 
+        #\       
+        #openjdk-8-jre-headless \
+        #openjdk-8-jre 
 # Build and install https://github.com/prometheus/jmx_exporter
 
     #cd /opt && \
@@ -26,12 +27,12 @@ WORKDIR ${JMX_DEV_BASE}/jmx_exporter
  RUN   mvn package   
  RUN  cat /etc/environment
  RUN   echo $JAVA_HOME
- RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
- RUN  apt-get -f install 
+ #RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
+ #RUN  apt-get -f install 
 # Clean up
- RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
- RUN   apt-get clean 
- RUN   rm -rf /var/lib/apt/lists/*
+ #RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
+ #RUN   apt-get clean 
+ #RUN   rm -rf /var/lib/apt/lists/*
  RUN   ls -la 
 # Mount your own config here to override the default
 VOLUME ${JMX_BASE}
