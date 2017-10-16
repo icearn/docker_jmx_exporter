@@ -11,9 +11,15 @@ RUN apt-get update && \
         #libsctp1 \
         #tzdata \
         #tzdata-java \
-        git 
-        #\       
-        #openjdk-8-jre-headless \
+        git \       
+        gcj-6-jre \
+        gcj-6-jre-headless \
+        gcj-6-jre-lib \
+        gcj-jre \
+        gcj-jre-headless \
+        libgcj-common \
+        libgcj17 \
+        libgcj17-awt
         #openjdk-8-jre 
 # Build and install https://github.com/prometheus/jmx_exporter
 
