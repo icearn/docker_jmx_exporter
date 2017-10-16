@@ -33,8 +33,8 @@ WORKDIR ${JMX_DEV_BASE}/jmx_exporter
  RUN   mvn package   
  RUN  cat /etc/environment
  RUN   echo $JAVA_HOME
- #RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
- #RUN  apt-get -f install 
+ RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
+ 
 # Clean up
  #RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
  #RUN   apt-get clean 
