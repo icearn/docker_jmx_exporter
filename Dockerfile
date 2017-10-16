@@ -38,5 +38,6 @@ WORKDIR ${JMX_DEV_BASE}/jmx_exporter
 VOLUME ${JMX_BASE}
 WORKDIR ${JMX_BASE}
 #ENTRYPOINT [ "/usr/bin/jmx_exporter" ]
+ENTRYPOINT [ "${JMX_BASE}" ]
 CMD [ "/bin/sh" ]
 #CMD [ "${SERVER_PORT}", "/opt/jmx_exporter/conf/jmx_exporter.yaml" ]
