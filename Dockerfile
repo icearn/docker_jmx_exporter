@@ -1,48 +1,43 @@
-FROM maven:3-jdk-8
-ENV JMX_EXPORTER_VERSION=0.11+SNAPSHOT
-ENV REPO_TAG=parent-${JMX_EXPORTER_VERSION}
-ENV JMX_DEV_BASE=/usr/src/app
-ENV JMX_BASE=/opt/jmx_exporter
-#EXPOSE ${SERVER_PORT}
+FROM solsson/kafka-jre@sha256:7765513cf5fa455a672a06f584058c1c81cc0b3b56cc56b0cfdf1a917a183f26
 
-# Install java
-RUN apt-get update && \
-    apt-get -y install \
-        #libsctp1 \
-        #tzdata \
-        #tzdata-java \
-        git \       
-        gcj-6-jre \
-        gcj-6-jre-headless \
-        gcj-6-jre-lib \
-        gcj-jre \
-        gcj-jre-headless \
-        libgcj-common \
-        libgcj17 \
-        libgcj17-awt
-        #openjdk-8-jre 
-# Build and install https://github.com/prometheus/jmx_exporter
+ENV EXPORTER_VERSION=parent-0.10
+ENV EXPORTER_REPO=github.com/prometheus/jmx_exporter
+ENV SERVICE_PORT=${SERVICE_PORT:-5556} #by default jmx set to port 5556 
+ENV REMOTE_PORT=${REMOTE_PORT:-5555} #by default jmx set connect to remote port 5555
+WORKDIR /usr/local/
 
-    #cd /opt && \
-RUN mkdir -p ${JMX_DEV_BASE}
-WORKDIR ${JMX_DEV_BASE}
-RUN git clone https://github.com/prometheus/jmx_exporter.git 
+RUN set -ex; \
+  runDeps=''; \
+  buildDeps='curl ca-certificates'; \
+  apt-get update && apt-get install -y $runDeps $buildDeps --no-install-recommends; \
+  \
+  MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
+  mkdir ./maven; \
+  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzf - --strip-components=1 -C ./maven; \
+  mvn --version; \
+  \
+  mkdir ./jmx_exporter; \
+  curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz | tar -xzf - --strip-components=1 -C ./jmx_exporter; \
+  cd ./jmx_exporter; \
+  mvn package; \
+  find jmx_prometheus_httpserver/ -name *-jar-with-dependencies.jar -exec mv -v '{}' ../jmx_prometheus_httpserver.jar \;; \
+  mv example_configs ../; \
+  cd ..; \
+  \
+  rm -Rf ./jmx_exporter ./maven /root/.m2; \
+  \
+  apt-get purge -y --auto-remove $buildDeps; \
+  rm -rf /var/lib/apt/lists/*; \
+  rm -rf /var/log/dpkg.log /var/log/alternatives.log /var/log/apt
 
-    #cd /opt/jmx_exporter && \
-WORKDIR ${JMX_DEV_BASE}/jmx_exporter
- RUN   mvn package   
- RUN  cat /etc/environment
- RUN   echo $JAVA_HOME
- RUN   dpkg -i ${JMX_DEV_BASE}/jmx_exporter/jmx_prometheus_httpserver/target/jmx_prometheus_httpserver_${JMX_EXPORTER_VERSION}_all.deb 
- 
-# Clean up
- #RUN   rm -rf ${JMX_DEV_BASE}/jmx_exporter/ 
- #RUN   apt-get clean 
- #RUN   rm -rf /var/lib/apt/lists/*
- RUN   ls -la 
-# Mount your own config here to override the default
-VOLUME ${JMX_BASE}
-WORKDIR ${JMX_BASE}
-#ENTRYPOINT [ "/usr/bin/jmx_exporter" ]
-CMD []
-#CMD [ "${SERVER_PORT}", "/opt/jmx_exporter/conf/jmx_exporter.yaml" ]
+# Use a sample config that also has a Grafana dashboard https://blog.rntech.co.uk/2016/10/20/monitoring-apache-kafka-with-prometheus/
+# Mount your own yml, for example using ConfigMap, or set Kafka JMX_PORT=5555
+RUN set -ex; \
+  buildDeps='curl ca-certificates'; \
+  apt-get update && apt-get install -y $buildDeps --no-install-recommends; \
+  apt-get purge -y --auto-remove $buildDeps; \
+  rm -rf /var/lib/apt/lists/*; \
+  rm -rf /var/log/dpkg.log /var/log/apt
+
+ENTRYPOINT ["java", "-Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=${REMOTE_PORT}", "-jar", "jmx_prometheus_httpserver.jar"]
+CMD ["${SERVICE_PORT}", "/opt/jmx_exporter/conf/kafka-prometheus-monitoring.yml"]
