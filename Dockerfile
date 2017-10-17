@@ -6,7 +6,7 @@ ENV EXPORTER_REPO=github.com/prometheus/jmx_exporter
 ENV SERVICE_PORT=${SERVICE_PORT:-5556}
 #by default jmx set connect to remote port 5555
 ENV REMOTE_PORT=${REMOTE_PORT:-5555} 
-ENV HEAP_OPTS=${HEAP_OPTS:--Xmx512M -Xms256M}
+ENV HEAP_OPTS=${HEAP_OPTS:--Xmx512M}
 WORKDIR /usr/local/
 
 RUN set -ex; \
