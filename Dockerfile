@@ -2,8 +2,11 @@ FROM solsson/kafka-jre@sha256:7765513cf5fa455a672a06f584058c1c81cc0b3b56cc56b0cf
 
 ENV EXPORTER_VERSION=parent-0.10
 ENV EXPORTER_REPO=github.com/prometheus/jmx_exporter
-ENV SERVICE_PORT=${SERVICE_PORT:-5556} #by default jmx set to port 5556 
-ENV REMOTE_PORT=${REMOTE_PORT:-5555} #by default jmx set connect to remote port 5555
+#by default jmx set to port 5556
+ENV SERVICE_PORT=${SERVICE_PORT:-5556}
+#by default jmx set connect to remote port 5555
+ENV REMOTE_PORT=${REMOTE_PORT:-5555} 
+ENV HEAP_OPTS=${HEAP_OPTS:--Xmx512M -Xms256M}
 WORKDIR /usr/local/
 
 RUN set -ex; \
@@ -39,5 +42,5 @@ RUN set -ex; \
   rm -rf /var/lib/apt/lists/*; \
   rm -rf /var/log/dpkg.log /var/log/apt
 
-ENTRYPOINT ["java", "-Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=${REMOTE_PORT}", "-jar", "jmx_prometheus_httpserver.jar"]
+ENTRYPOINT ["java", "${HEAP_OPTS}","-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.port=${REMOTE_PORT}", "-jar", "jmx_prometheus_httpserver.jar"]
 CMD ["${SERVICE_PORT}", "/opt/jmx_exporter/conf/kafka-prometheus-monitoring.yml"]
