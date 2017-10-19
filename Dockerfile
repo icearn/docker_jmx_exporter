@@ -42,5 +42,5 @@ RUN set -ex; \
   rm -rf /var/lib/apt/lists/*; \
   rm -rf /var/log/dpkg.log /var/log/apt
 RUN echo "Check: $SERVICE_PORT; $REMOTE_PORT; $HEAP_OPTS"
-ENTRYPOINT ["java", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.port=${REMOTE_PORT}", "${HEAP_OPTS}","-jar", "jmx_prometheus_httpserver.jar"]
-CMD ["${SERVICE_PORT}", "/opt/jmx_exporter/conf/kafka-prometheus-monitoring.yml"]
+ENTRYPOINT ["java", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.port=$REMOTE_PORT", "$HEAP_OPTS","-jar", "jmx_prometheus_httpserver.jar"]
+CMD ["$SERVICE_PORT", "/opt/jmx_exporter/conf/kafka-prometheus-monitoring.yml"]
