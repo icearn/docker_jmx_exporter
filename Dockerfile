@@ -45,4 +45,4 @@ RUN echo "Check: $SERVICE_PORT; $REMOTE_PORT; $HEAP_OPTS"
 ADD jmx-server-run.sh ./
 RUN chmod +x jmx-server-run.sh
 ENTRYPOINT ["./jmx-server-run.sh"]
-CMD ["/opt/jmx_exporter/conf/kafka-prometheus-monitoring.yml"]
+CMD [""]
