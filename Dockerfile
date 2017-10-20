@@ -18,7 +18,7 @@ RUN set -ex; \
   \
   MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
   mkdir ./maven; \
-  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;
+  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;\
   tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C ./maven; \
   mvn --version; \
   \
