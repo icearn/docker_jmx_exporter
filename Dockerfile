@@ -1,4 +1,3 @@
-#FROM solsson/kafka-jre@sha256:7765513cf5fa455a672a06f584058c1c81cc0b3b56cc56b0cfdf1a917a183f26
 FROM anapsix/alpine-java
 
 ENV EXPORTER_VERSION=parent-0.10
@@ -10,18 +9,23 @@ ENV REMOTE_PORT=${REMOTE_PORT:-5555}
 ENV HEAP_OPTS=${HEAP_OPTS:--Xmx512M}
 WORKDIR /usr/local/
 
-RUN set -ex; \
-  runDeps=''; \
-  buildDeps='curl ca-certificates'; \
-  apt-get update && apt-get install -y $runDeps $buildDeps --no-install-recommends; \
-  \
+ 
+   #set -ex; \
+  #runDeps=''; \
+  #buildDeps='curl ca-certificates'; \
+  #apt-get update && apt-get install -y $runDeps $buildDeps --no-install-recommends; \
+  
+RUN mkdir ./maven; \
   MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
-  mkdir ./maven; \
-  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzf - --strip-components=1 -C ./maven; \
+  #curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzf - --strip-components=1 -C ./maven; \
+  wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz; \
+  tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz --strip-components=1 -C ./maven; \
   mvn --version; \
   \
   mkdir ./jmx_exporter; \
-  curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz | tar -xzf - --strip-components=1 -C ./jmx_exporter; \
+  #curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz | tar -xzf - --strip-components=1 -C ./jmx_exporter; \
+  wget https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz; \
+  tar -xzf $EXPORTER_VERSION.tar.gz --strip-components=1 -C ./jmx_exporter; \
   cd ./jmx_exporter; \
   mvn package; \
   find jmx_prometheus_httpserver/ -name *-jar-with-dependencies.jar -exec mv -v '{}' ../jmx_prometheus_httpserver.jar \;; \
@@ -30,7 +34,7 @@ RUN set -ex; \
   \
   rm -Rf ./jmx_exporter ./maven /root/.m2; \
   \
-  apt-get purge -y --auto-remove $buildDeps; \
+  #apt-get purge -y --auto-remove $buildDeps; \
   rm -rf /var/lib/apt/lists/*; \
   rm -rf /var/log/dpkg.log /var/log/alternatives.log /var/log/apt
 
