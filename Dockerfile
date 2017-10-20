@@ -39,5 +39,5 @@ RUN rm -rf /var/lib/apt/lists/*; \
 RUN echo "Check: $SERVICE_PORT; $REMOTE_PORT; $HEAP_OPTS"
 ADD jmx-server-run.sh ./
 RUN chmod a+x jmx-server-run.sh
-#ENTRYPOINT ["./jmx-server-run.sh"]
-CMD ["jmx-server-run.sh"]
+ENTRYPOINT ["./jmx-server-run.sh"]
+CMD [""]
