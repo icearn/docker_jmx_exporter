@@ -1,4 +1,5 @@
-FROM solsson/kafka-jre@sha256:7765513cf5fa455a672a06f584058c1c81cc0b3b56cc56b0cfdf1a917a183f26
+#FROM solsson/kafka-jre@sha256:7765513cf5fa455a672a06f584058c1c81cc0b3b56cc56b0cfdf1a917a183f26
+FROM anapsix/alpine-java
 
 ENV EXPORTER_VERSION=parent-0.10
 ENV EXPORTER_REPO=github.com/prometheus/jmx_exporter
@@ -43,6 +44,6 @@ RUN set -ex; \
   rm -rf /var/log/dpkg.log /var/log/apt
 RUN echo "Check: $SERVICE_PORT; $REMOTE_PORT; $HEAP_OPTS"
 ADD jmx-server-run.sh ./
-RUN chmod +x jmx-server-run.sh
-ENTRYPOINT ["./jmx-server-run.sh"]
-CMD [""]
+RUN chmod a+x jmx-server-run.sh
+#ENTRYPOINT ["./jmx-server-run.sh"]
+CMD ["jmx-server-run.sh"]
