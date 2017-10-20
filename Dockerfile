@@ -18,11 +18,13 @@ RUN set -ex; \
   \
   MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
   mkdir ./maven; \
-  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzf - --strip-components=1 -C ./maven; \
+  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;
+  tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C ./maven; \
   mvn --version; \
   \
   mkdir ./jmx_exporter; \
-  curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz | tar -xzf - --strip-components=1 -C ./jmx_exporter; \
+  curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz;\
+  tar -xzf $EXPORTER_VERSION.tar.gz -C ./jmx_exporter; \
   cd ./jmx_exporter; \
   mvn package; \
   find jmx_prometheus_httpserver/ -name *-jar-with-dependencies.jar -exec mv -v '{}' ../jmx_prometheus_httpserver.jar \;; \
