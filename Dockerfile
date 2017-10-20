@@ -11,19 +11,16 @@ WORKDIR /usr/local/
 
 
   
-RUN set -ex; \
-  runDeps=''; \
-  buildDeps='curl ca-certificates'; \
-  apk update && apk add -q $runDeps $buildDeps; \
-  \
+RUN mkdir ./maven; \
   MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
-  mkdir ./maven; \
-  curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;\
+  apk add --update openssl;\
+  \
+  wget -q https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;\
   tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C ./maven; \
   mvn --version; \
   \
   mkdir ./jmx_exporter; \
-  curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz;\
+  wget -q https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz;\
   tar -xzf $EXPORTER_VERSION.tar.gz -C ./jmx_exporter; \
   cd ./jmx_exporter; \
   mvn package; \
@@ -32,8 +29,7 @@ RUN set -ex; \
   cd ..; \
   \
   rm -Rf ./jmx_exporter ./maven /root/.m2; \
-  \
-  apk --purge -q del $buildDeps; \
+  \ 
   rm -rf /var/lib/apt/lists/*; \
   rm -rf /var/log/dpkg.log /var/log/alternatives.log /var/log/apt
 
