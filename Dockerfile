@@ -9,21 +9,15 @@ ENV REMOTE_PORT=${REMOTE_PORT:-5555}
 ENV HEAP_OPTS=${HEAP_OPTS:--Xmx512M}
 WORKDIR /usr/local/
 
- 
-   #set -ex; \
-  #runDeps=''; \
-  #buildDeps='curl ca-certificates'; \
-  #apt-get update && apt-get install -y $runDeps $buildDeps --no-install-recommends; \
+
   
 RUN mkdir ./maven; \
   MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
-  #curl -SLs https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -xzf - --strip-components=1 -C ./maven; \
   wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz; \
   tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz --strip-components=1 -C ./maven; \
   mvn --version; \
   \
   mkdir ./jmx_exporter; \
-  #curl -SLs https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz | tar -xzf - --strip-components=1 -C ./jmx_exporter; \
   wget https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz; \
   tar -xzf $EXPORTER_VERSION.tar.gz --strip-components=1 -C ./jmx_exporter; \
   cd ./jmx_exporter; \
