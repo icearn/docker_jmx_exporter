@@ -26,9 +26,9 @@ RUN mkdir ./maven; \
   cd ./jmx_exporter; \
   mvn package; \
   find jmx_prometheus_httpserver/ -name *-jar-with-dependencies.jar -exec mv -v '{}' ../jmx_prometheus_httpserver.jar \;; \
-  mv example_configs ../; \
-  cd ..; \
-  \
+  #mv example_configs ../; \
+  cd ..; 
+  #\
   #rm -Rf ./jmx_exporter ./maven /root/.m2; \
   #\ 
   #rm -rf /var/lib/apt/lists/*; \
