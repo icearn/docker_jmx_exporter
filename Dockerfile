@@ -17,6 +17,7 @@ RUN mkdir ./maven; \
   \
   wget -q https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;\
   tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C ./maven; \
+  echo $PATH;\
   mvn --version; \
   \
   mkdir ./jmx_exporter; \
@@ -28,10 +29,10 @@ RUN mkdir ./maven; \
   mv example_configs ../; \
   cd ..; \
   \
-  rm -Rf ./jmx_exporter ./maven /root/.m2; \
-  \ 
-  rm -rf /var/lib/apt/lists/*; \
-  rm -rf /var/log/dpkg.log /var/log/alternatives.log /var/log/apt
+  #rm -Rf ./jmx_exporter ./maven /root/.m2; \
+  #\ 
+  #rm -rf /var/lib/apt/lists/*; \
+  #rm -rf /var/log/dpkg.log /var/log/alternatives.log /var/log/apt
 
 
 # Use a sample config that also has a Grafana dashboard https://blog.rntech.co.uk/2016/10/20/monitoring-apache-kafka-with-prometheus/
