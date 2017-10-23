@@ -11,24 +11,24 @@ WORKDIR /usr/local/
 
 
   
-RUN mkdir ./maven; \
+RUN 
   MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
   apk add --update openssl;\
   \
-  wget -q https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz;
-  #\
-  #tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C ./maven; \
+  wget -q https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz; \
+  tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C .; \
   echo $PATH;\
+  mv apache-maven-$MAVEN_VERSION maven; \
   mvn --version; \
   \
-  #mkdir ./jmx_exporter; \
-  #wget -q https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz;\
-  #tar -xzf $EXPORTER_VERSION.tar.gz -C ./jmx_exporter; \
-  #cd ./jmx_exporter; \
-  #mvn package; \
-  #find jmx_prometheus_httpserver/ -name *-jar-with-dependencies.jar -exec mv -v '{}' ../jmx_prometheus_httpserver.jar \;; \
-  #mv example_configs ../; \
-  #cd ..; \
+  wget -q https://$EXPORTER_REPO/archive/$EXPORTER_VERSION.tar.gz;\
+  tar -xzf $EXPORTER_VERSION.tar.gz -C .; \
+  mv jmx_exporter-$EXPORTER_VERSION jmx_exporter; \
+  cd ./jmx_exporter; \
+  mvn package; \
+  find jmx_prometheus_httpserver/ -name *-jar-with-dependencies.jar -exec mv -v '{}' ../jmx_prometheus_httpserver.jar \;; \
+  mv example_configs ../; \
+  cd ..; \
   #rm -Rf ./jmx_exporter ./maven /root/.m2; \
   #\ 
   #rm -rf /var/lib/apt/lists/*; \
