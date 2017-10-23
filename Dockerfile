@@ -11,9 +11,9 @@ WORKDIR /usr/local/
 
 
   
-RUN 
-  MAVEN_VERSION=3.5.0 PATH=$PATH:$(pwd)/maven/bin; \
-  apk add --update openssl;\
+RUN apk add --update openssl;\
+  MAVEN_VERSION=3.5.0;\
+  PATH=$PATH:$(pwd)/maven/bin; \
   \
   wget -q https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz; \
   tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C .; \
