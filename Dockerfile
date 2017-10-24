@@ -28,8 +28,6 @@ RUN set -ex; \
   cd ..; \
   \
   rm -Rf ./jmx_exporter ./maven /root/.m2; \
-  \
-  apt-get purge -y --auto-remove $buildDeps; \
   rm -rf /var/lib/apt/lists/*; \
   rm -rf /var/log/dpkg.log /var/log/alternatives.log /var/log/apt  
 
