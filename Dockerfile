@@ -1,4 +1,4 @@
-FROM openjdk/8-jdk
+FROM openjdk:8-jdk
 
 ENV EXPORTER_VERSION=parent-0.10
 ENV EXPORTER_REPO=github.com/prometheus/jmx_exporter
