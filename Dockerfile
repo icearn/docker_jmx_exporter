@@ -3,7 +3,7 @@ FROM openjdk:8-jdk
 ENV EXPORTER_VERSION=parent-0.10
 ENV EXPORTER_REPO=github.com/prometheus/jmx_exporter
 #by default jmx set to port 5556
-ENV SERVICE_PORT=${SERVER_PORT:-5556}
+ENV SERVER_PORT=${SERVER_PORT:-5556}
 #by default jmx set connect to remote port 5555
 ENV REMOTE_PORT=${REMOTE_PORT:-5555} 
 ENV HEAP_OPTS=${HEAP_OPTS:--Xmx512M}
